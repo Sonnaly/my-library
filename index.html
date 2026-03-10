@@ -3,52 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <title>My Library - Fichário Minimalista</title>
-    <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #e5e5e5; display: flex; flex-direction: column; align-items: center; padding: 50px; }
-        h1 { color: #444; letter-spacing: 2px; }
-
-        /* Grade de Livros */
-        .estante { display: grid; grid-template-columns: repeat(auto-fill, 150px); gap: 40px; margin-top: 40px; }
-        .livro-item { cursor: pointer; text-align: center; transition: 0.3s; }
-        .livro-item:hover { transform: translateY(-10px); }
-        
-        /* Capa Genérica (Caso o link quebre de novo) */
-        .capa { width: 150px; height: 220px; border-radius: 5px; box-shadow: 0 10px 20px rgba(0,0,0,0.2); background: #ccc; object-fit: cover; }
-        .estrelas-mini { color: #f1c40f; margin-top: 10px; font-size: 1.2rem; }
-
-        /* Modal */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); justify-content: center; align-items: center; z-index: 1000; }
-        
-        /* A Folha de Fichário Nova */
-        .fichario {
-            background-color: #fffbdc;
-            width: 500px;
-            min-height: 500px;
-            padding: 50px;
-            border-left: 40px solid #fffbdc; /* Espaço dos furos */
-            box-shadow: 20px 20px 60px rgba(0,0,0,0.5);
-            position: relative;
-            border-radius: 2px;
-        }
-
-        /* Furos Estilizados */
-        .furos { position: absolute; left: -25px; top: 0; bottom: 0; display: flex; flex-direction: column; justify-content: space-around; padding: 40px 0; }
-        .furo { width: 18px; height: 18px; background: #333; border-radius: 50%; box-shadow: inset 2px 2px 5px rgba(142, 138, 138, 0.5); }
-
-        /* Cabeçalho do Fichário */
-        .header-fichario { display: flex; justify-content: space-between; align-items: baseline; padding-bottom: 15px; border-bottom: 2px solid #333; /* A LINHA DIVISÓRIA */ margin-bottom: 30px; }
-        .header-fichario h2 { margin: 0; font-size: 1.8rem; color: #222; }
-        .estrelas-fichario { color: #f1c40f; font-size: 1.5rem; }
-
-        /* Área das Notas */
-        .notas { color: #444; line-height: 1.6; font-size: 1.1rem; white-space: pre-wrap; font-style: italic;}
-        .fechar { position: absolute; top: 15px; right: 20px; cursor: pointer; font-size: 25px; color: #999; }
-        .fechar:hover { color: #000; }
-    </style>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
 </head>
 <body>
 
     <h1>MY LIBRARY</h1>
+
+    <button id="btn-abrir-form" onclick="abrirFormulario()">+ Adicionar Novo Livro</button>
+
+    <div id="modalFormulario" class="modal-bg" onclick="fecharFormulario()">
+        <div class="form-container" onclick="event.stopPropagation()">
+            <h2>Novo Livro</h2>
+            <input type="text" id="capa-input" placeholder="Link da imagem da capa">
+            <input type="text" id="titulo-input" placeholder="Nome do Livro">
+            <div class="rating">
+                <p>Sua nota:</p>
+                <input type="radio" name="estrela" value="1" id="e1"><label for="e1">1</label>
+                <input type="radio" name="estrela" value="2" id="e2"><label for="e2">2</label>
+                <input type="radio" name="estrela" value="3" id="e3"><label for="e3">3</label>
+                <input type="radio" name="estrela" value="4" id="e4"><label for="e4">4</label>
+                <input type="radio" name="estrela" value="5" id="e5" checked><label for="e5">5</label>
+            </div>
+            <textarea id="notas-input" placeholder="Suas notas..."></textarea>
+            <button onclick="adicionarLivro()">Salvar na Estante</button>
+        </div>
+    </div>
 
     <div class="estante">
         <div class="livro-item" onclick="abrirFichario('O Pequeno Príncipe', '★★★★★', 'Este livro é uma lição de vida. A cada vez que leio, descubro algo novo sobre o essencial que é invisível aos olhos.')">
@@ -89,6 +69,70 @@
         function fecharFichario() {
             document.getElementById('modalFichario').style.display = 'none';
         }
+        function abrirFormulario() {
+            document.getElementById('modalFormulario').style.display = 'flex';
+        }
+
+        function fecharFormulario() {
+            document.getElementById('modalFormulario').style.display = 'none';
+        }
+       // 1. Criamos uma lista (Array) para guardar os livros na memória
+
+        let meusLivros = JSON.parse(localStorage.getItem('biblioteca')) || [];
+        // 2. Função para "Desenhar" os livros que estão salvos
+
+        function renderizarLivros() {
+            const estante = document.querySelector('.estante');
+            estante.innerHTML = ""; // Limpa a estante antes de desenhar
+            meusLivros.forEach((livro, index) => {
+                const novoLivro = document.createElement('div');
+                novoLivro.className = 'livro-item';
+                // Passamos os dados salvos para o clique do fichário
+                novoLivro.onclick = () => abrirFichario(livro.titulo, livro.estrelas, livro.notas);
+                novoLivro.innerHTML = `
+                    <img src="${livro.capa}" class="capa" onerror="this.src='https://via.placeholder.com/150x220?text=Sem+Capa'">
+                    <div class="estrelas-mini">${livro.estrelas}</div>
+                `;
+                estante.appendChild(novoLivro);
+            });
+
+        }
+
+
+// 3. Atualizamos a função de ADICIONAR
+        function adicionarLivro() {
+            const titulo = document.getElementById('titulo-input').value;
+            const notas = document.getElementById('notas-input').value;
+            const capa = document.getElementById('capa-input').value || 'https://via.placeholder.com/150x220';
+
+            const estrelaRating = document.querySelector('input[name="estrela"]:checked').value;
+            const estrelasTexto = "★".repeat(estrelaRating) + "☆".repeat(5 - estrelaRating);
+
+
+            // Criamos um objeto "Livro"
+
+            const novoLivroObj = {
+                titulo: titulo,
+                notas: notas,
+                capa: capa,
+                estrelas: estrelasTexto
+            };
+
+
+            // Adicionamos na nossa lista e salvamos no "banco de dados" do navegador
+            meusLivros.push(novoLivroObj);
+            localStorage.setItem('biblioteca', JSON.stringify(meusLivros));
+            renderizarLivros(); // Redesenha a estante
+            fecharFormulario();
+
+            // Limpa os campos
+            document.getElementById('titulo-input').value = "";
+            document.getElementById('notas-input').value = "";
+
+    }
+        // 4. Executa a renderização assim que a página carrega
+
+        window.onload = renderizarLivros; 
     </script>
     
 
