@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>My Library - Fichário Minimalista</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #e5e5e5; display: flex; flex-direction: column; align-items: center; padding: 50px; }
+        h1 { color: #444; letter-spacing: 2px; }
+
+        /* Grade de Livros */
+        .estante { display: grid; grid-template-columns: repeat(auto-fill, 150px); gap: 40px; margin-top: 40px; }
+        .livro-item { cursor: pointer; text-align: center; transition: 0.3s; }
+        .livro-item:hover { transform: translateY(-10px); }
+        
+        /* Capa Genérica (Caso o link quebre de novo) */
+        .capa { width: 150px; height: 220px; border-radius: 5px; box-shadow: 0 10px 20px rgba(0,0,0,0.2); background: #ccc; object-fit: cover; }
+        .estrelas-mini { color: #f1c40f; margin-top: 10px; font-size: 1.2rem; }
+
+        /* Modal */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); justify-content: center; align-items: center; z-index: 1000; }
+        
+        /* A Folha de Fichário Nova */
+        .fichario {
+            background-color: #fffbdc;
+            width: 500px;
+            min-height: 500px;
+            padding: 50px;
+            border-left: 40px solid #fffbdc; /* Espaço dos furos */
+            box-shadow: 20px 20px 60px rgba(0,0,0,0.5);
+            position: relative;
+            border-radius: 2px;
+        }
+
+        /* Furos Estilizados */
+        .furos { position: absolute; left: -25px; top: 0; bottom: 0; display: flex; flex-direction: column; justify-content: space-around; padding: 40px 0; }
+        .furo { width: 18px; height: 18px; background: #333; border-radius: 50%; box-shadow: inset 2px 2px 5px rgba(142, 138, 138, 0.5); }
+
+        /* Cabeçalho do Fichário */
+        .header-fichario { display: flex; justify-content: space-between; align-items: baseline; padding-bottom: 15px; border-bottom: 2px solid #333; /* A LINHA DIVISÓRIA */ margin-bottom: 30px; }
+        .header-fichario h2 { margin: 0; font-size: 1.8rem; color: #222; }
+        .estrelas-fichario { color: #f1c40f; font-size: 1.5rem; }
+
+        /* Área das Notas */
+        .notas { color: #444; line-height: 1.6; font-size: 1.1rem; white-space: pre-wrap; font-style: italic;}
+        .fechar { position: absolute; top: 15px; right: 20px; cursor: pointer; font-size: 25px; color: #999; }
+        .fechar:hover { color: #000; }
+    </style>
+</head>
+<body>
+
+    <h1>MY LIBRARY</h1>
+
+    <div class="estante">
+        <div class="livro-item" onclick="abrirFichario('O Pequeno Príncipe', '★★★★★', 'Este livro é uma lição de vida. A cada vez que leio, descubro algo novo sobre o essencial que é invisível aos olhos.')">
+            <img src="https://m.media-amazon.com/images/I/71lih9979vL.jpg" class="capa" alt="Capa">
+            <div class="estrelas-mini">★★★★★</div>
+        </div>
+    </div>
+
+    <div id="modalFichario" class="modal" onclick="fecharFichario()">
+        <div class="fichario" onclick="event.stopPropagation()">
+            <span class="fechar" onclick="fecharFichario()">&times;</span>
+            
+            <div class="furos">
+                <div class="furo"></div>
+                <div class="furo"></div>
+                <div class="furo"></div>
+            </div>
+
+            <div class="header-fichario">
+                <h2 id="modal-titulo">Título do Livro</h2>
+                <div id="modal-estrelas" class="estrelas-fichario"></div>
+            </div>
+
+            <div class="notas" id="modal-notas">
+                Suas anotações aparecerão aqui...
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function abrirFichario(titulo, estrelas, notas) {
+            document.getElementById('modal-titulo').innerText = titulo;
+            document.getElementById('modal-estrelas').innerText = estrelas;
+            document.getElementById('modal-notas').innerText = notas;
+            document.getElementById('modalFichario').style.display = 'flex';
+        }
+
+        function fecharFichario() {
+            document.getElementById('modalFichario').style.display = 'none';
+        }
+    </script>
+
+</body>
+</html>
