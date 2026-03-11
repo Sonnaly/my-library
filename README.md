@@ -1,7 +1,6 @@
 **My Library**
-My Library é uma aplicação web simples para organizar seus livros pessoais.
-Com ela é possível adicionar livros à estante, registrar notas de leitura, avaliar com estrelas, editar informações e remover livros.
-
+My Library é uma aplicação web simples para organizar seus livros pessoais.  
+Com ela é possível adicionar livros à estante, registrar notas de leitura, avaliar com estrelas, editar informações e remover livros.  
 O projeto foi desenvolvido utilizando HTML, CSS e JavaScript puro, com armazenamento local no navegador usando LocalStorage.
 
 **Funcionalidades**
