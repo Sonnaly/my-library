@@ -3,27 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <title>My Library - Fichário Minimalista</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Rouge+Script&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
 
-    <h1>MY LIBRARY</h1>
+    <h1>My Library</h1>
 
     <button id="btn-abrir-form" onclick="abrirFormulario()">+ Adicionar Novo Livro</button>
 
     <div id="modalFormulario" class="modal-bg" onclick="fecharFormulario()">
         <div class="form-container" onclick="event.stopPropagation()">
             <h2>Novo Livro</h2>
-            <input type="text" id="capa-input" placeholder="Link da imagem da capa">
+            <input type="file" id="capa-input" accept="image/*">
             <input type="text" id="titulo-input" placeholder="Nome do Livro">
             <div class="rating">
-                <p>Sua nota:</p>
-                <input type="radio" name="estrela" value="1" id="e1"><label for="e1">1</label>
-                <input type="radio" name="estrela" value="2" id="e2"><label for="e2">2</label>
-                <input type="radio" name="estrela" value="3" id="e3"><label for="e3">3</label>
-                <input type="radio" name="estrela" value="4" id="e4"><label for="e4">4</label>
-                <input type="radio" name="estrela" value="5" id="e5" checked><label for="e5">5</label>
+                <span class="star" data-value="1">★</span>
+                <span class="star" data-value="2">★</span>
+                <span class="star" data-value="3">★</span>
+                <span class="star" data-value="4">★</span>
+                <span class="star" data-value="5">★</span>
             </div>
             <textarea id="notas-input" placeholder="Suas notas..."></textarea>
             <button onclick="adicionarLivro()">Salvar na Estante</button>
@@ -55,85 +55,11 @@
             <div class="notas" id="modal-notas">
                 Suas anotações aparecerão aqui...
             </div>
+            <button onclick="editarLivro()">✏ Editar</button>
         </div>
     </div>
 
-    <script>
-        function abrirFichario(titulo, estrelas, notas) {
-            document.getElementById('modal-titulo').innerText = titulo;
-            document.getElementById('modal-estrelas').innerText = estrelas;
-            document.getElementById('modal-notas').innerText = notas;
-            document.getElementById('modalFichario').style.display = 'flex';
-        }
-
-        function fecharFichario() {
-            document.getElementById('modalFichario').style.display = 'none';
-        }
-        function abrirFormulario() {
-            document.getElementById('modalFormulario').style.display = 'flex';
-        }
-
-        function fecharFormulario() {
-            document.getElementById('modalFormulario').style.display = 'none';
-        }
-       // 1. Criamos uma lista (Array) para guardar os livros na memória
-
-        let meusLivros = JSON.parse(localStorage.getItem('biblioteca')) || [];
-        // 2. Função para "Desenhar" os livros que estão salvos
-
-        function renderizarLivros() {
-            const estante = document.querySelector('.estante');
-            estante.innerHTML = ""; // Limpa a estante antes de desenhar
-            meusLivros.forEach((livro, index) => {
-                const novoLivro = document.createElement('div');
-                novoLivro.className = 'livro-item';
-                // Passamos os dados salvos para o clique do fichário
-                novoLivro.onclick = () => abrirFichario(livro.titulo, livro.estrelas, livro.notas);
-                novoLivro.innerHTML = `
-                    <img src="${livro.capa}" class="capa" onerror="this.src='https://via.placeholder.com/150x220?text=Sem+Capa'">
-                    <div class="estrelas-mini">${livro.estrelas}</div>
-                `;
-                estante.appendChild(novoLivro);
-            });
-
-        }
-
-
-// 3. Atualizamos a função de ADICIONAR
-        function adicionarLivro() {
-            const titulo = document.getElementById('titulo-input').value;
-            const notas = document.getElementById('notas-input').value;
-            const capa = document.getElementById('capa-input').value || 'https://via.placeholder.com/150x220';
-
-            const estrelaRating = document.querySelector('input[name="estrela"]:checked').value;
-            const estrelasTexto = "★".repeat(estrelaRating) + "☆".repeat(5 - estrelaRating);
-
-
-            // Criamos um objeto "Livro"
-
-            const novoLivroObj = {
-                titulo: titulo,
-                notas: notas,
-                capa: capa,
-                estrelas: estrelasTexto
-            };
-
-
-            // Adicionamos na nossa lista e salvamos no "banco de dados" do navegador
-            meusLivros.push(novoLivroObj);
-            localStorage.setItem('biblioteca', JSON.stringify(meusLivros));
-            renderizarLivros(); // Redesenha a estante
-            fecharFormulario();
-
-            // Limpa os campos
-            document.getElementById('titulo-input').value = "";
-            document.getElementById('notas-input').value = "";
-
-    }
-        // 4. Executa a renderização assim que a página carrega
-
-        window.onload = renderizarLivros; 
-    </script>
+    <script src="./js/script.js"></script>
     
 
 </body>

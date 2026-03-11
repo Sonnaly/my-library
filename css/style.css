@@ -1,11 +1,12 @@
 
 body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #e5e5e5; display: flex; flex-direction: column; align-items: center; padding: 50px; }
 h1 {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Rouge Script', serif;
+    font-size: 4rem;
     font-weight: 700;
     font-style: italic;
     color: #1a1a1a;
-    letter-spacing: -1px;
+    letter-spacing: 3px;
     border-bottom: 3px double #333; /*Linha dupla*/
     padding-bottom: 15px;
 }
@@ -20,12 +21,14 @@ h1 {
     margin: 0 auto;      /* Centraliza a estante na tela */
     justify-content: start; /* Alinha tudo à esquerda */
     padding: 20px;
+
+    border-bottom: 8px solid #c49a6c;
 }
 .livro-item { cursor: pointer; text-align: center; transition: 0.3s; }
-.livro-item:hover { transform: translateY(-10px); }
+.livro-item:hover { transform: translateY(-12px) scale(1.03); }
         
 /* Capa Genérica (Caso o link quebre de novo) */
-.capa { width: 150px; height: 220px; border-radius: 5px; box-shadow: 0 10px 20px rgba(0,0,0,0.2); background: #ccc; object-fit: cover; }
+.capa { width: 150px; height: 220px; border-radius: 5px; box-shadow: 0 10px 20px rgba(0,0,0,0.25), 0 3px 6px rgba(0,0,0,0.15); object-fit: cover; }
 .estrelas-mini { color: #f1c40f; margin-top: 10px; font-size: 1.2rem; }
 
 /* Modal */
@@ -34,7 +37,8 @@ h1 {
 /* A Folha de Fichário Nova */
 .fichario {
     background-color: #fffbdc;
-    width: 500px;
+    width:90%;
+    max-width:500px;
     min-height: 500px;
     padding: 50px;
     border-left: 40px solid #fffbdc; /* Espaço dos furos */
@@ -84,18 +88,90 @@ h1 {
 /* A caixa branca do formulário */
 .form-container {
     background: white;
-    padding: 30px;
-    border-radius: 8px;
-    width: 350px;
+    padding: 35px;
+    border-radius: 12px;
+    width: 380px;
     display: flex;
     flex-direction: column;
     gap: 15px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
 }
-.rating {
-    display: flex;
-    gap: 10px;
-    align-items: center;
+
+.form-container input,
+.form-container textarea{
+    padding:10px;
+    border-radius:6px;
+    border:1px solid #ddd;
+    font-size:14px;
 }
-.rating input {
+
+.form-container button{
+    background:#333;
+    color:white;
+    border:none;
+    padding:10px;
+    border-radius:8px;
+    cursor:pointer;
+}
+.star{
+    font-size:28px;
+    cursor:pointer;
+    color:#ccc;
+}
+
+.star.active{
+    color:#f1c40f;
+}
+
+.livro-item{
+    position: relative;
+}
+
+.btn-delete{
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: #ababab;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
     cursor: pointer;
+    font-size: 12px;
 }
+
+@media (max-width: 768px){
+
+    .estante{
+        grid-template-columns: repeat(auto-fill, 120px);
+        gap:20px;
+        justify-content:center;
+    }
+
+    .capa{
+        width:120px;
+        height:180px;
+    }
+
+}
+
+@media (max-width: 600px){
+
+    .estante{
+        grid-template-columns: repeat(auto-fill, 90px);
+        gap:15px;
+        justify-content:center;
+    }
+
+    .capa{
+        width:70px;
+        height:100px;
+    }
+
+    .estrelas-mini{
+        font-size:12px;
+    }
+
+}
+
