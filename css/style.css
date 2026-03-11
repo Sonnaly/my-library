@@ -22,7 +22,7 @@ h1 {
     justify-content: start; /* Alinha tudo à esquerda */
     padding: 20px;
 
-    border-bottom: 8px solid #c49a6c;
+    /*border-bottom: 8px solid #c49a6c;*/
 }
 .livro-item { cursor: pointer; text-align: center; transition: 0.3s; }
 .livro-item:hover { transform: translateY(-12px) scale(1.03); }
@@ -57,7 +57,7 @@ h1 {
 .estrelas-fichario { color: #f1c40f; font-size: 1.5rem; }
 
  /* Área das Notas */
-.notas { color: #444; line-height: 1.6; font-size: 1.1rem; white-space: pre-wrap; font-style: italic;}
+.notas { color: #444; line-height: 1.6; font-size: 1.1rem; white-space: pre-wrap; word-wrap: break-word; overflow-wrap: break-word; padding: 10px; font-style: italic;}
 .fechar { position: absolute; top: 15px; right: 20px; cursor: pointer; font-size: 25px; color: #999; }
 .fechar:hover { color: #000; }
 
@@ -155,6 +155,7 @@ h1 {
     }
 
 }
+button {background-color: #cccccc00;}
 
 @media (max-width: 600px){
 
